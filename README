@@ -1,0 +1,79 @@
+I use WEKA for data mining, which uses ARFF files. 
+
+WEKA is a powerful tool, but sometimes I want to look at the datasets in a more universal format where I can manipulate them as I please.  This Python script will convert ARFF files to XML or JSON.
+
+Usage:
+
+./arff_parser.py [filename1.arff filename2.arff ... ] [-json | -xml] [--debug] 
+
+# Debug mode will print a variable dump of the schema read in. Default value is False.
+
+Expects:
+	
+	- a WEKA file ('some-filename.arff') formatted as follows:
+	
+		@relation <dataset-name>
+		
+		% Comments (ignored)
+		
+		@attribute1 [{value1,value2,value3} | datatype] 
+		@attribute2 [{value1,value2,value3} | datatype] 
+		...
+		
+		@data
+		[attr1,attr2,...]
+		[attr1,attr2,...]
+		[attr1,attr2,...]
+		[attr1,attr2,...]
+		
+		
+Outputs:
+	
+
+	-json:
+		
+		'some-filename.json'
+		
+		{
+			"relation":dataset-name,
+			"attributes":[
+				{'name':attribute1,'values': [value1,value2...]},
+				{'name':attribute2,'values': [value1,value2...]}
+			],
+			"data":[
+				{attr1:val1,attr2:val2...},
+				{attr1:val1,attr2:val2...},
+				{attr1:val1,attr2:val2...},
+				...
+			]
+		}
+		
+	-xml:
+		
+		'some-filename.xml'
+		
+		<dataset>
+			<relation>dataset-name</relation>
+			<attributes>
+				<attribute>
+					<name>attribute1</name>
+					<values>real</values>
+				</attribute>
+				<attribute>
+					<name>attribute2</name>
+					<values>
+						<value>val1</value>
+						<value>val2</value>
+						<value>val3</value>
+						<value>...</value>
+					</values>
+				</attribute>
+			</attributes>
+			<data>
+				<entry><attr1>val</attr1><attr2>val</attr2>...</entry>
+				<entry><attr1>val</attr1><attr2>val</attr2>...</entry>
+				...
+			</data>
+		</dataset>
+	
+	
